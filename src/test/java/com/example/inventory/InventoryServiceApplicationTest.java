@@ -32,27 +32,31 @@ class InventoryServiceApplicationTest {
 	}
 
 	@Test
-	void placeOrderTest() {
-		String orderRequest = """
-				{
-				    "skuCode": "iphone_15",
-				    "price": 1000,
-				    "quantity": 50
-				}
-				""";
+	void isInStockTest() {
 		
-		String orderResponse = RestAssured.given()
-			.contentType("application/json")
-			.body(orderRequest)
+		boolean response = RestAssured.given()
 			.when()
-			.post("/api/inventories")
+			.get("/api/inventory?skuCode=iphone_15&quantity=10")
 			.then()
 			.log().all()
-			.statusCode(201)
-			.extract()
-			.body().asString();
+			.statusCode(200)
+			.extract().response().as(Boolean.class);
 		
-		assertThat(orderResponse).isEqualTo("Order placed successfully");
+		assertThat(response).isTrue();
+	}
+	
+	@Test
+	void isNotInStockTest() {
+		
+		boolean response = RestAssured.given()
+			.when()
+			.get("/api/inventory?skuCode=iphone_15&quantity=150")
+			.then()
+			.log().all()
+			.statusCode(200)
+			.extract().response().as(Boolean.class);
+		
+		assertThat(response).isFalse();
 	}
 
 }
