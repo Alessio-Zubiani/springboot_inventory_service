@@ -15,7 +15,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true 
-    path: /inventory/v3/api-docs
+    path: /inventory-service/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /inventory/swagger-ui.html
+    path: /inventory-service/swagger-ui.html
